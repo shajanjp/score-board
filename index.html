@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Offline Score Tracker</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <style>
+            body {
+                background:
+                    radial-gradient(
+                        circle at top left,
+                        #dbeafe,
+                        transparent 30%
+                    ),
+                    radial-gradient(
+                        circle at bottom right,
+                        #fce7f3,
+                        transparent 30%
+                    ),
+                    #f8fafc;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            .glass {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(14px);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+            }
+
+            .fade-in {
+                animation: fadeIn 0.3s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0px);
+                }
+            }
+
+            .bar {
+                transition: all 0.4s ease;
+            }
+        </style>
+    </head>
+    <body class="text-slate-700">
+        <div class="max-w-7xl mx-auto p-6">
+            <!-- Header -->
+            <div
+                class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"
+            >
+                <div>
+                    <h1 class="text-4xl font-bold tracking-tight">
+                        Score Board
+                    </h1>
+                    <p class="text-slate-500 mt-2">
+                        Fully offline • LocalStorage powered
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        onclick="openAddPlayerModal()"
+                        class="bg-white/70 border border-slate-200 px-5 py-3 rounded-2xl hover:bg-white transition shadow-sm font-medium"
+                    >
+                        + Add Player
+                    </button>
+                    <button
+                        onclick="openAddGameModal()"
+                        class="bg-blue-600 text-white px-5 py-3 rounded-2xl hover:bg-blue-700 transition shadow-md shadow-blue-200 font-medium"
+                    >
+                        + Add Game
+                    </button>
+                </div>
+            </div>
+
+            <!-- Score Summary -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                <!-- Current Game Score -->
+                <div class="glass rounded-[2rem] p-8 shadow-xl border-white/50">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Current Game</h2>
+                        <div
+                            id="currentGameName"
+                            class="text-blue-600 font-semibold bg-blue-50 px-4 py-1 rounded-full text-sm"
+                        >
+                            No Active Game
+                        </div>
+                    </div>
+                    <div id="currentGameScores" class="space-y-4">
+                        <div class="text-slate-400 text-center py-8">
+                            Start a game to see scores
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Game Score / Chart -->
+                <div class="glass rounded-[2rem] p-8 shadow-xl border-white/50">
+                    <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
+                    <div id="totalScoreChart" class="space-y-6">
+                        <!-- Chart bars will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Games History (optional/collapsible?) -->
+            <div class="mt-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-slate-800">
+                        Game History
+                    </h2>
+                </div>
+                <div
+                    id="gamesList"
+                    class="grid md:grid-cols-2 xl:grid-cols-3 gap-6"
+                ></div>
+            </div>
+        </div>
+
+        <!-- Create Game Modal -->
+        <div
+            id="addGameModal"
+            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+        >
+            <div
+                class="glass rounded-[2rem] w-full max-w-lg p-8 shadow-2xl fade-in border-white/50"
+            >
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold">New Game</h2>
+                    <button
+                        onclick="closeAddGameModal()"
+                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label
+                            class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                            >Game Title</label
+                        >
+                        <input
+                            id="gameName"
+                            type="text"
+                            placeholder="Game name"
+                            class="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 transition"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                            >Select Players</label
+                        >
+                        <div
+                            id="playerSelection"
+                            class="grid grid-cols-2 gap-3"
+                        ></div>
+                    </div>
+
+                    <button
+                        onclick="createGame()"
+                        class="w-full bg-blue-600 text-white px-5 py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200"
+                    >
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Player Modal -->
+        <div
+            id="addPlayerModal"
+            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+        >
+            <div
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+            >
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold">Add Player</h2>
+                    <button
+                        onclick="closeAddPlayerModal()"
+                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <input
+                        id="playerInput"
+                        type="text"
+                        placeholder="Player name"
+                        class="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 transition"
+                    />
+
+                    <button
+                        onclick="addPlayer()"
+                        class="w-full bg-slate-900 text-white px-5 py-4 rounded-2xl hover:bg-slate-800 transition font-bold"
+                    >
+                        Add Player
+                    </button>
+
+                    <div
+                        id="playersList"
+                        class="space-y-2 mt-4 max-h-48 overflow-y-auto pr-2"
+                    ></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Update Modal -->
+        <div
+            id="scoreModal"
+            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+        >
+            <div
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+            >
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold">Update Score</h2>
+
+                    <button
+                        onclick="closeModal()"
+                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <div class="mb-6">
+                    <label
+                        id="activePlayerLabel"
+                        class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                        >Player</label
+                    >
+                    <input
+                        id="scoreInput"
+                        type="number"
+                        step="0.1"
+                        placeholder="0"
+                        class="w-full text-3xl font-bold rounded-2xl border border-slate-200 px-5 py-6 outline-none focus:ring-4 focus:ring-blue-100 transition text-center"
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <button
+                        onclick="submitScore(true)"
+                        class="w-full bg-blue-600 text-white py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200"
+                    >
+                        + Add To Score
+                    </button>
+
+                    <button
+                        onclick="submitScore(false)"
+                        class="w-full border border-slate-200 text-slate-600 py-3 rounded-2xl hover:bg-slate-50 transition font-medium"
+                    >
+                        Replace Score
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let players = JSON.parse(localStorage.getItem("players") || "[]");
+            let games = JSON.parse(localStorage.getItem("games") || "[]");
+
+            let activeGameId = null;
+            let activePlayer = null;
+
+            function saveData() {
+                localStorage.setItem("players", JSON.stringify(players));
+                localStorage.setItem("games", JSON.stringify(games));
+            }
+
+            function getNextGameTitle() {
+                const gameTitles = games.map((g) => g.name);
+                const gameNumbers = gameTitles
+                    .map((t) => {
+                        const match = t.match(/Game (\d+)/);
+                        return match ? parseInt(match[1]) : 0;
+                    })
+                    .filter((n) => !isNaN(n));
+
+                const nextNum =
+                    gameNumbers.length > 0 ? Math.max(...gameNumbers) + 1 : 1;
+                return `Game ${nextNum}`;
+            }
+
+            function openAddGameModal() {
+                document.getElementById("gameName").value = getNextGameTitle();
+                renderPlayerSelection();
+                document
+                    .getElementById("addGameModal")
+                    .classList.remove("hidden");
+                document.getElementById("addGameModal").classList.add("flex");
+            }
+
+            function closeAddGameModal() {
+                document.getElementById("addGameModal").classList.add("hidden");
+                document
+                    .getElementById("addGameModal")
+                    .classList.remove("flex");
+            }
+
+            function openAddPlayerModal() {
+                renderPlayers();
+                document
+                    .getElementById("addPlayerModal")
+                    .classList.remove("hidden");
+                document.getElementById("addPlayerModal").classList.add("flex");
+            }
+
+            function closeAddPlayerModal() {
+                document
+                    .getElementById("addPlayerModal")
+                    .classList.add("hidden");
+                document
+                    .getElementById("addPlayerModal")
+                    .classList.remove("flex");
+            }
+
+            function addPlayer() {
+                const input = document.getElementById("playerInput");
+                const name = input.value.trim();
+
+                if (!name) return;
+
+                if (players.includes(name)) {
+                    alert("Player already exists");
+                    return;
+                }
+
+                players.push(name);
+
+                saveData();
+                renderPlayers();
+                renderPlayerSelection();
+
+                input.value = "";
+            }
+
+            function renderPlayers() {
+                const list = document.getElementById("playersList");
+
+                list.innerHTML = "";
+
+                players.forEach((player) => {
+                    const div = document.createElement("div");
+
+                    div.className =
+                        "flex items-center justify-between bg-white/50 px-4 py-3 rounded-xl border border-slate-100";
+
+                    div.innerHTML = `
+                <span class="font-medium">${player}</span>
+
+                <button
+                    onclick="deletePlayer('${player}')"
+                    class="text-red-400 hover:text-red-600 transition"
+                >
+                    ✕
+                </button>
+            `;
+
+                    list.appendChild(div);
+                });
+            }
+
+            function deletePlayer(player) {
+                if (!confirm(`Are you sure you want to delete ${player}?`))
+                    return;
+                players = players.filter((p) => p !== player);
+
+                games.forEach((game) => {
+                    delete game.scores[player];
+                    game.players = game.players.filter((p) => p !== player);
+                });
+
+                saveData();
+
+                renderPlayers();
+                renderPlayerSelection();
+                renderAll();
+            }
+
+            function renderPlayerSelection() {
+                const container = document.getElementById("playerSelection");
+
+                container.innerHTML = "";
+
+                players.forEach((player) => {
+                    const label = document.createElement("label");
+
+                    label.className =
+                        "bg-white/50 border border-slate-100 px-4 py-3 rounded-2xl cursor-pointer flex items-center gap-3 hover:bg-white transition";
+
+                    label.innerHTML = `
+                <input type="checkbox" value="${player}" class="w-5 h-5 rounded-lg border-slate-300 text-blue-600 focus:ring-blue-500" checked>
+                <span class="font-medium">${player}</span>
+            `;
+
+                    container.appendChild(label);
+                });
+            }
+
+            function createGame() {
+                const name = document.getElementById("gameName").value.trim();
+
+                if (!name) {
+                    alert("Enter game name");
+                    return;
+                }
+
+                const selectedPlayers = [
+                    ...document.querySelectorAll(
+                        "#playerSelection input:checked",
+                    ),
+                ].map((el) => el.value);
+
+                if (!selectedPlayers.length) {
+                    alert("Select players");
+                    return;
+                }
+
+                const scores = {};
+
+                selectedPlayers.forEach((p) => {
+                    scores[p] = 0;
+                });
+
+                games.unshift({
+                    id: Date.now(),
+                    name,
+                    players: selectedPlayers,
+                    scores,
+                    createdAt: new Date().toLocaleString(),
+                });
+
+                saveData();
+                closeAddGameModal();
+                renderAll();
+            }
+
+            function renderAll() {
+                renderCurrentGame();
+                renderTotalScores();
+                renderGamesHistory();
+            }
+
+            function renderCurrentGame() {
+                const container = document.getElementById("currentGameScores");
+                const nameDisplay = document.getElementById("currentGameName");
+
+                if (!games.length) {
+                    container.innerHTML = `<div class="text-slate-400 text-center py-8 italic">No games yet</div>`;
+                    nameDisplay.innerText = "No Active Game";
+                    return;
+                }
+
+                const game = games[0];
+                nameDisplay.innerText = game.name;
+
+                container.innerHTML = "";
+
+                game.players.forEach((player) => {
+                    const score = game.scores[player] || 0;
+                    const div = document.createElement("div");
+                    div.className =
+                        "flex items-center justify-between bg-white/50 p-4 rounded-2xl border border-white";
+                    div.innerHTML = `
+                        <span class="font-semibold text-lg text-slate-800">${player}</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-2xl font-black text-blue-600">${score}</span>
+                            <button onclick="openModal(${game.id}, '${player}')" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition">Update</button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            function renderTotalScores() {
+                const container = document.getElementById("totalScoreChart");
+                const totals = {};
+
+                players.forEach((p) => (totals[p] = 0));
+                games.forEach((g) => {
+                    Object.entries(g.scores).forEach(([p, s]) => {
+                        if (totals[p] !== undefined) totals[p] += s;
+                    });
+                });
+
+                const sortedPlayers = Object.entries(totals).sort(
+                    (a, b) => b[1] - a[1],
+                );
+                const maxScore = Math.max(...Object.values(totals), 1);
+
+                container.innerHTML = "";
+
+                if (sortedPlayers.length === 0) {
+                    container.innerHTML = `<div class="text-slate-400 text-center py-8 italic">Add players to see leaderboard</div>`;
+                    return;
+                }
+
+                sortedPlayers.forEach(([player, score]) => {
+                    const percentage = (score / maxScore) * 100;
+                    const div = document.createElement("div");
+                    div.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-slate-700">${player}</span>
+                            <span class="font-black text-slate-900">${score}</span>
+                        </div>
+                        <div class="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
+                            <div class="bar h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            function renderGamesHistory() {
+                const container = document.getElementById("gamesList");
+
+                container.innerHTML = "";
+
+                if (games.length === 0) {
+                    container.innerHTML = `<div class="col-span-full text-slate-400 italic text-center py-8">No games history available</div>`;
+                    return;
+                }
+
+                // Show all games in history
+                games.forEach((game, index) => {
+                    const card = document.createElement("div");
+                    card.className =
+                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-sm fade-in hover:bg-white/60 transition flex flex-col h-full";
+
+                    const maxGameScore = Math.max(
+                        ...Object.values(game.scores),
+                        1,
+                    );
+
+                    const scoresHtml = game.players
+                        .map((player) => {
+                            const score = game.scores[player] || 0;
+                            const percentage = (score / maxGameScore) * 100;
+                            return `
+                            <div class="mb-3 last:mb-0">
+                                <div class="flex justify-between items-center mb-1 text-xs">
+                                    <span class="font-semibold text-slate-600">${player}</span>
+                                    <span class="font-bold text-slate-900">${score}</span>
+                                </div>
+                                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="bar h-full bg-blue-400 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
+                                </div>
+                            </div>
+                        `;
+                        })
+                        .join("");
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-lg">${game.name}</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mt-0.5">${game.createdAt}</p>
+                            </div>
+                            <button onclick="deleteGame(${game.id})" class="text-slate-300 hover:text-red-500 transition">✕</button>
+                        </div>
+
+                        <div class="flex-1 space-y-1 mb-4">
+                            ${scoresHtml}
+                        </div>
+
+                        <div class="flex justify-between items-center mt-auto pt-4 border-t border-slate-100">
+                            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+                                ${index === 0 ? "LATEST" : "COMPLETED"}
+                            </span>
+                            <span class="text-[10px] text-slate-400 font-medium">${game.players.length} Players</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            function deleteGame(id) {
+                if (!confirm("Delete this game record?")) return;
+                games = games.filter((g) => g.id !== id);
+                saveData();
+                renderAll();
+            }
+
+            function openModal(gameId, player) {
+                activeGameId = gameId;
+                activePlayer = player;
+                document.getElementById("activePlayerLabel").innerText =
+                    `Update score for ${player}`;
+                document.getElementById("scoreInput").value = "";
+                document
+                    .getElementById("scoreModal")
+                    .classList.remove("hidden");
+                document.getElementById("scoreModal").classList.add("flex");
+                setTimeout(
+                    () => document.getElementById("scoreInput").focus(),
+                    100,
+                );
+            }
+
+            function closeModal() {
+                document.getElementById("scoreModal").classList.add("hidden");
+                document.getElementById("scoreModal").classList.remove("flex");
+            }
+
+            function submitScore(addMode) {
+                const value = parseFloat(
+                    document.getElementById("scoreInput").value,
+                );
+
+                if (isNaN(value)) {
+                    alert("Enter valid score");
+                    return;
+                }
+
+                const game = games.find((g) => g.id === activeGameId);
+
+                if (!game) return;
+
+                if (addMode) {
+                    game.scores[activePlayer] =
+                        (game.scores[activePlayer] || 0) + value;
+                } else {
+                    game.scores[activePlayer] = value;
+                }
+
+                saveData();
+                renderAll();
+                closeModal();
+            }
+
+            renderAll();
+        </script>
+    </body>
+</html>
