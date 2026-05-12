@@ -82,7 +82,7 @@
             <!-- Score Summary -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
                 <!-- Current Game Score -->
-                <div class="glass rounded-[2rem] p-8 shadow-xl border-white/50">
+                <div class="glass rounded-[2rem] p-8 shadow-lg border-white/50">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold">Current Game</h2>
                         <div
@@ -100,7 +100,7 @@
                 </div>
 
                 <!-- Total Game Score / Chart -->
-                <div class="glass rounded-[2rem] p-8 shadow-xl border-white/50">
+                <div class="glass rounded-[2rem] p-8 shadow-lg border-white/50">
                     <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
                     <div id="totalScoreChart" class="space-y-6">
                         <!-- Chart bars will be injected here -->
@@ -552,21 +552,34 @@
                 games.forEach((game, index) => {
                     const card = document.createElement("div");
                     card.className =
-                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-sm fade-in hover:bg-white/60 transition flex flex-col h-full";
+                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-lg fade-in hover:bg-white/60 transition flex flex-col h-full";
 
                     const maxGameScore = Math.max(
                         ...Object.values(game.scores),
                         1,
                     );
 
+                    const actualMaxScore = Math.max(
+                        ...Object.values(game.scores),
+                    );
+
                     const scoresHtml = game.players
                         .map((player) => {
                             const score = game.scores[player] || 0;
                             const percentage = (score / maxGameScore) * 100;
+                            const isWinner =
+                                score === actualMaxScore && actualMaxScore > 0;
+                            const crownIcon = isWinner
+                                ? `
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-1 text-amber-500 fill-amber-200 inline-block">
+                                    <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+                                </svg>`
+                                : "";
+
                             return `
                             <div class="mb-3 last:mb-0">
                                 <div class="flex justify-between items-center mb-1 text-xs">
-                                    <span class="font-semibold text-slate-600">${player}</span>
+                                    <span class="font-semibold text-slate-600 flex items-center">${player}${crownIcon}</span>
                                     <span class="font-bold text-slate-900">${score}</span>
                                 </div>
                                 <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -591,9 +604,11 @@
                         </div>
 
                         <div class="flex justify-between items-center mt-auto pt-4 border-t border-slate-100">
-                            <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
-                                ${index === 0 ? "LATEST" : "COMPLETED"}
-                            </span>
+                            ${
+                                index === 0
+                                    ? `<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">Active Game</span>`
+                                    : `<span class="text-[10px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Completed</span>`
+                            }
                             <span class="text-[10px] text-slate-400 font-medium">${game.players.length} Players</span>
                         </div>
                     `;
