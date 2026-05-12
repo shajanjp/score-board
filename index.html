@@ -82,7 +82,9 @@
             <!-- Score Summary -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
                 <!-- Current Game Score -->
-                <div class="glass rounded-[2rem] p-8 shadow-lg border-white/50">
+                <div
+                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
+                >
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold">Current Game</h2>
                         <div
@@ -100,7 +102,9 @@
                 </div>
 
                 <!-- Total Game Score / Chart -->
-                <div class="glass rounded-[2rem] p-8 shadow-lg border-white/50">
+                <div
+                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
+                >
                     <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
                     <div id="totalScoreChart" class="space-y-6">
                         <!-- Chart bars will be injected here -->
@@ -560,7 +564,7 @@
                 games.forEach((game, index) => {
                     const card = document.createElement("div");
                     card.className =
-                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-lg fade-in hover:bg-white/60 transition flex flex-col h-full";
+                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-md fade-in hover:bg-white/60 hover:shadow-lg transition-all duration-300 flex flex-col h-full";
 
                     const maxGameScore = Math.max(
                         ...Object.values(game.scores),
