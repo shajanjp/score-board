@@ -5,6 +5,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Score Board</title>
 
+        <!-- Favicon -->
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://scoreboard.vibe.com/" />
+        <meta property="og:title" content="Score Board" />
+        <meta
+            property="og:description"
+            content="Score. Save. Repeat. The elegant way to track your game scores."
+        />
+        <meta property="og:image" content="og-image.png" />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content="Score Board" />
+        <meta
+            property="twitter:description"
+            content="Score. Save. Repeat. The elegant way to track your game scores."
+        />
+        <meta property="twitter:image" content="og-image.png" />
+
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -160,11 +183,18 @@
             <div
                 class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"
             >
-                <div>
-                    <h1 class="text-4xl font-bold tracking-tight">
-                        Score Board
-                    </h1>
-                    <p class="text-slate-500 mt-2">Score. Save. Repeat.</p>
+                <div class="flex items-center gap-4">
+                    <img
+                        src="trophy.png"
+                        alt="Score Board Logo"
+                        class="w-16 h-16 drop-shadow-sm"
+                    />
+                    <div>
+                        <h1 class="text-4xl font-bold tracking-tight">
+                            Score Board
+                        </h1>
+                        <p class="text-slate-500 mt-1">Score. Save. Repeat.</p>
+                    </div>
                 </div>
                 <div class="flex gap-3 items-center">
                     <button
