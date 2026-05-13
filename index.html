@@ -6,6 +6,11 @@
         <title>Score Board</title>
 
         <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+            };
+        </script>
 
         <style>
             body {
@@ -23,12 +28,34 @@
                     #f8fafc;
                 min-height: 100vh;
                 overflow-x: hidden;
+                transition: background 0.3s ease;
+            }
+
+            .dark body {
+                background:
+                    radial-gradient(
+                        circle at top left,
+                        #1e293b,
+                        transparent 30%
+                    ),
+                    radial-gradient(
+                        circle at bottom right,
+                        #312e81,
+                        transparent 30%
+                    ),
+                    #0f172a;
+                color: #f1f5f9;
             }
 
             .glass {
-                background: rgba(255, 255, 255, 0.7);
+                background: rgba(255, 255, 255, 0.85);
                 backdrop-filter: blur(14px);
-                border: 1px solid rgba(255, 255, 255, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+            }
+
+            .dark .glass {
+                background: rgba(15, 23, 42, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
 
             .fade-in {
@@ -49,9 +76,85 @@
             .bar {
                 transition: all 0.4s ease;
             }
+
+            .dark .text-slate-700 {
+                color: #cbd5e1;
+            }
+            .dark .text-slate-800 {
+                color: #f1f5f9;
+            }
+            .dark .text-slate-600 {
+                color: #94a3b8;
+            }
+            .dark .text-slate-500 {
+                color: #94a3b8;
+            }
+            .dark .text-slate-400 {
+                color: #64748b;
+            }
+            .dark .text-slate-900 {
+                color: #f8fafc;
+            }
+
+            .dark .bg-white\/70 {
+                background-color: rgba(51, 65, 85, 0.7);
+            }
+            .dark .border-slate-200 {
+                border-color: #334155;
+            }
+            .dark .hover\:bg-white:hover {
+                background-color: #334155;
+            }
+            .dark .bg-blue-50 {
+                background-color: #1e293b;
+            }
+            .dark .bg-slate-100 {
+                background-color: #1e293b;
+            }
+            .dark .bg-slate-50 {
+                background-color: #1e293b;
+            }
+            .dark .border-slate-50 {
+                border-color: #1e293b;
+            }
+            .dark .border-slate-100 {
+                border-color: #334155;
+            }
+            .dark .bg-white\/50 {
+                background-color: rgba(51, 65, 85, 0.5);
+            }
+            .dark .bg-white\/40 {
+                background-color: rgba(51, 65, 85, 0.4);
+            }
+            .dark .border-white\/50 {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            .dark .border-white\/20 {
+                border-color: rgba(255, 255, 255, 0.05);
+            }
+            .dark .bg-emerald-50 {
+                background-color: #064e3b;
+            }
+            .dark .border-emerald-100 {
+                border-color: #065f46;
+            }
+            .dark .text-emerald-600 {
+                color: #34d399;
+            }
+
+            .dark input {
+                background-color: #1e293b;
+                border-color: #334155;
+                color: #f1f5f9;
+            }
+            .dark input::placeholder {
+                color: #64748b;
+            }
         </style>
     </head>
-    <body class="text-slate-700 min-h-screen flex flex-col">
+    <body
+        class="text-slate-700 min-h-screen flex flex-col transition-colors duration-300"
+    >
         <div class="max-w-7xl mx-auto p-6 w-full flex-1">
             <!-- Header -->
             <div
@@ -63,7 +166,41 @@
                     </h1>
                     <p class="text-slate-500 mt-2">Score. Save. Repeat.</p>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-3 items-center">
+                    <button
+                        onclick="toggleDarkMode()"
+                        class="p-3 rounded-2xl bg-white/70 border border-slate-200 hover:bg-white transition shadow-sm text-slate-600 dark:text-slate-300"
+                        title="Toggle Dark Mode"
+                    >
+                        <svg
+                            id="theme-icon-light"
+                            class="w-5 h-5 hidden"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"
+                            ></path>
+                        </svg>
+                        <svg
+                            id="theme-icon-dark"
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                            ></path>
+                        </svg>
+                    </button>
                     <button
                         onclick="openAddPlayerModal()"
                         class="bg-white/70 border border-slate-200 px-5 py-3 rounded-2xl hover:bg-white transition shadow-sm font-medium"
@@ -286,12 +423,140 @@
             </div>
         </div>
 
+        <!-- Info Button -->
+        <button
+            onclick="openInfoModal()"
+            class="fixed bottom-6 right-6 p-3 bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 rounded-full hover:bg-white dark:hover:bg-slate-800 transition shadow-lg backdrop-blur-md z-40 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
+            title="About Score Board"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        </button>
+
+        <!-- Info Modal -->
+        <div
+            id="infoModal"
+            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+        >
+            <div
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+            >
+                <div class="flex items-center justify-between mb-6">
+                    <h2
+                        class="text-2xl font-bold text-slate-900 dark:text-slate-100"
+                    >
+                        About Score Board
+                    </h2>
+                    <button
+                        onclick="closeInfoModal()"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <div class="space-y-4 text-slate-700 dark:text-slate-400">
+                    <p>
+                        <span
+                            class="font-bold text-slate-900 dark:text-slate-100"
+                            >Score Board</span
+                        >
+                        is a simple, elegant way to track scores for your
+                        favorite card games, board games, or any friendly
+                        competition.
+                    </p>
+                    <p>
+                        Designed with a focus on speed and aesthetic, it
+                        features a glassmorphism UI, real-time leaderboard
+                        updates, and persistent history.
+                    </p>
+                    <div
+                        class="pt-4 border-t border-slate-200 dark:border-slate-800"
+                    >
+                        <p class="text-sm">
+                            Built with HTML, CSS (Tailwind), and Vanilla
+                            JavaScript. All data is stored locally in your
+                            browser.
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    onclick="closeInfoModal()"
+                    class="w-full mt-8 bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-5 py-4 rounded-2xl hover:opacity-90 transition font-bold"
+                >
+                    Got it!
+                </button>
+            </div>
+        </div>
+
         <script>
             let players = JSON.parse(localStorage.getItem("players") || "[]");
             let games = JSON.parse(localStorage.getItem("games") || "[]");
 
             let activeGameId = null;
             let activePlayer = null;
+
+            // Dark Mode Logic
+            function initTheme() {
+                const theme = localStorage.getItem("theme");
+                if (
+                    theme === "dark" ||
+                    (!theme &&
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches)
+                ) {
+                    document.documentElement.classList.add("dark");
+                    updateThemeIcons(true);
+                } else {
+                    document.documentElement.classList.remove("dark");
+                    updateThemeIcons(false);
+                }
+            }
+
+            function toggleDarkMode() {
+                const isDark =
+                    document.documentElement.classList.toggle("dark");
+                localStorage.setItem("theme", isDark ? "dark" : "light");
+                updateThemeIcons(isDark);
+            }
+
+            function openInfoModal() {
+                document.getElementById("infoModal").classList.remove("hidden");
+                document.getElementById("infoModal").classList.add("flex");
+            }
+
+            function closeInfoModal() {
+                document.getElementById("infoModal").classList.add("hidden");
+                document.getElementById("infoModal").classList.remove("flex");
+            }
+
+            function updateThemeIcons(isDark) {
+                const sunIcon = document.getElementById("theme-icon-light");
+                const moonIcon = document.getElementById("theme-icon-dark");
+                if (isDark) {
+                    sunIcon.classList.remove("hidden");
+                    moonIcon.classList.add("hidden");
+                } else {
+                    sunIcon.classList.add("hidden");
+                    moonIcon.classList.remove("hidden");
+                }
+            }
+
+            initTheme();
 
             function saveData() {
                 localStorage.setItem("players", JSON.stringify(players));
