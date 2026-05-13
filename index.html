@@ -248,6 +248,16 @@
 
             <!-- Score Summary -->
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                <!-- Total Game Score / Chart -->
+                <div
+                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
+                >
+                    <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
+                    <div id="totalScoreChart" class="space-y-6">
+                        <!-- Chart bars will be injected here -->
+                    </div>
+                </div>
+
                 <!-- Current Game Score -->
                 <div
                     class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
@@ -265,16 +275,6 @@
                         <div class="text-slate-400 text-center py-8">
                             Start a game to see scores
                         </div>
-                    </div>
-                </div>
-
-                <!-- Total Game Score / Chart -->
-                <div
-                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
-                >
-                    <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
-                    <div id="totalScoreChart" class="space-y-6">
-                        <!-- Chart bars will be injected here -->
                     </div>
                 </div>
             </div>
