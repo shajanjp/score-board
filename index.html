@@ -99,84 +99,10 @@
             .bar {
                 transition: all 0.4s ease;
             }
-
-            .dark .text-slate-700 {
-                color: #cbd5e1;
-            }
-            .dark .text-slate-800 {
-                color: #f1f5f9;
-            }
-            .dark .text-slate-600 {
-                color: #94a3b8;
-            }
-            .dark .text-slate-500 {
-                color: #94a3b8;
-            }
-            .dark .text-slate-400 {
-                color: #64748b;
-            }
-            .dark .text-slate-900 {
-                color: #f8fafc;
-            }
-
-            .dark .bg-white\/70 {
-                background-color: rgba(51, 65, 85, 0.7);
-            }
-            .dark .border-slate-200 {
-                border-color: #334155;
-            }
-            .dark .hover\:bg-white:hover {
-                background-color: #334155;
-            }
-            .dark .bg-blue-50 {
-                background-color: #1e293b;
-            }
-            .dark .bg-slate-100 {
-                background-color: #1e293b;
-            }
-            .dark .bg-slate-50 {
-                background-color: #1e293b;
-            }
-            .dark .border-slate-50 {
-                border-color: #1e293b;
-            }
-            .dark .border-slate-100 {
-                border-color: #334155;
-            }
-            .dark .bg-white\/50 {
-                background-color: rgba(51, 65, 85, 0.5);
-            }
-            .dark .bg-white\/40 {
-                background-color: rgba(51, 65, 85, 0.4);
-            }
-            .dark .border-white\/50 {
-                border-color: rgba(255, 255, 255, 0.1);
-            }
-            .dark .border-white\/20 {
-                border-color: rgba(255, 255, 255, 0.05);
-            }
-            .dark .bg-emerald-50 {
-                background-color: #064e3b;
-            }
-            .dark .border-emerald-100 {
-                border-color: #065f46;
-            }
-            .dark .text-emerald-600 {
-                color: #34d399;
-            }
-
-            .dark input {
-                background-color: #1e293b;
-                border-color: #334155;
-                color: #f1f5f9;
-            }
-            .dark input::placeholder {
-                color: #64748b;
-            }
         </style>
     </head>
     <body
-        class="text-slate-700 min-h-screen flex flex-col transition-colors duration-300"
+        class="text-slate-700 dark:text-slate-300 min-h-screen flex flex-col transition-colors duration-300"
     >
         <div class="max-w-7xl mx-auto p-6 w-full flex-1">
             <!-- Header -->
@@ -190,16 +116,20 @@
                         class="w-16 h-16 drop-shadow-sm"
                     />
                     <div>
-                        <h1 class="text-4xl font-bold tracking-tight">
+                        <h1
+                            class="text-4xl font-bold tracking-tight dark:text-white"
+                        >
                             Score Board
                         </h1>
-                        <p class="text-slate-500 mt-1">Score. Save. Repeat.</p>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">
+                            Score. Save. Repeat.
+                        </p>
                     </div>
                 </div>
                 <div class="flex gap-3 items-center">
                     <button
                         onclick="toggleDarkMode()"
-                        class="p-3 rounded-2xl bg-white/70 border border-slate-200 hover:bg-white transition shadow-sm text-slate-600 dark:text-slate-300"
+                        class="p-3 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition shadow-sm text-slate-600 dark:text-slate-300"
                         title="Toggle Dark Mode"
                     >
                         <svg
@@ -233,13 +163,13 @@
                     </button>
                     <button
                         onclick="openAddPlayerModal()"
-                        class="bg-white/70 border border-slate-200 px-5 py-3 rounded-2xl hover:bg-white transition shadow-sm font-medium"
+                        class="bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 px-5 py-3 rounded-2xl hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100 transition shadow-sm font-medium"
                     >
                         + Add Player
                     </button>
                     <button
                         onclick="openAddGameModal()"
-                        class="bg-blue-600 text-white px-5 py-3 rounded-2xl hover:bg-blue-700 transition shadow-md shadow-blue-200 font-medium"
+                        class="bg-blue-600 text-white px-5 py-3 rounded-2xl hover:bg-blue-700 transition shadow-md shadow-blue-200 dark:shadow-none font-medium"
                     >
                         + Add Game
                     </button>
@@ -250,9 +180,11 @@
             <div class="grid lg:grid-cols-2 gap-8 mb-8">
                 <!-- Total Game Score / Chart -->
                 <div
-                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
+                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 dark:border-white/10 hover:shadow-lg transition-all duration-300"
                 >
-                    <h2 class="text-2xl font-bold mb-6">Leaderboard (Total)</h2>
+                    <h2 class="text-2xl font-bold mb-6 dark:text-white">
+                        Leaderboard (Total)
+                    </h2>
                     <div id="totalScoreChart" class="space-y-6">
                         <!-- Chart bars will be injected here -->
                     </div>
@@ -260,19 +192,23 @@
 
                 <!-- Current Game Score -->
                 <div
-                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 hover:shadow-lg transition-all duration-300"
+                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 dark:border-white/10 hover:shadow-lg transition-all duration-300"
                 >
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold">Current Game</h2>
+                        <h2 class="text-2xl font-bold dark:text-white">
+                            Current Game
+                        </h2>
                         <div
                             id="currentGameName"
-                            class="text-blue-600 font-semibold bg-blue-50 px-4 py-1 rounded-full text-sm"
+                            class="text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/30 px-4 py-1 rounded-full text-sm"
                         >
                             No Active Game
                         </div>
                     </div>
                     <div id="currentGameScores" class="space-y-4">
-                        <div class="text-slate-400 text-center py-8">
+                        <div
+                            class="text-slate-400 dark:text-slate-500 text-center py-8"
+                        >
                             Start a game to see scores
                         </div>
                     </div>
@@ -282,7 +218,9 @@
             <!-- Games History (optional/collapsible?) -->
             <div class="mt-12">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-semibold text-slate-800">
+                    <h2
+                        class="text-xl font-semibold text-slate-800 dark:text-slate-200"
+                    >
                         Game History
                     </h2>
                 </div>
@@ -295,11 +233,11 @@
 
         <!-- Footer -->
         <footer
-            class="w-full bg-white/40 backdrop-blur-md border-t border-white/20 py-8 text-center text-slate-400 text-xs italic mt-20"
+            class="w-full bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border-t border-white/20 dark:border-white/5 py-8 text-center text-slate-400 dark:text-slate-500 text-xs italic mt-20"
         >
             Vibe-coded by
             <a
-                class="text-slate-600 hover:text-slate-800"
+                class="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition"
                 href="https://shajanjacob.com"
                 target="_blank"
                 >Shajan</a
@@ -313,13 +251,13 @@
             class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-lg p-8 shadow-2xl fade-in border-white/50"
+                class="glass rounded-[2rem] w-full max-w-lg p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
             >
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold">New Game</h2>
+                    <h2 class="text-2xl font-bold dark:text-white">New Game</h2>
                     <button
                         onclick="closeAddGameModal()"
-                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
                     >
                         ✕
                     </button>
@@ -328,20 +266,20 @@
                 <div class="space-y-6">
                     <div>
                         <label
-                            class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                            class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
                             >Game Title</label
                         >
                         <input
                             id="gameName"
                             type="text"
                             placeholder="Game name"
-                            class="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 transition"
+                            class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition dark:text-white dark:placeholder:text-slate-500"
                         />
                     </div>
 
                     <div>
                         <label
-                            class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                            class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
                             >Select Players</label
                         >
                         <div
@@ -352,7 +290,7 @@
 
                     <button
                         onclick="createGame()"
-                        class="w-full bg-blue-600 text-white px-5 py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200"
+                        class="w-full bg-blue-600 text-white px-5 py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200 dark:shadow-none"
                     >
                         Start Game
                     </button>
@@ -366,13 +304,15 @@
             class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
             >
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold">Add Player</h2>
+                    <h2 class="text-2xl font-bold dark:text-white">
+                        Add Player
+                    </h2>
                     <button
                         onclick="closeAddPlayerModal()"
-                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
                     >
                         ✕
                     </button>
@@ -383,12 +323,12 @@
                         id="playerInput"
                         type="text"
                         placeholder="Player name"
-                        class="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 transition"
+                        class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition dark:text-white dark:placeholder:text-slate-500"
                     />
 
                     <button
                         onclick="addPlayer()"
-                        class="w-full bg-slate-900 text-white px-5 py-4 rounded-2xl hover:bg-slate-800 transition font-bold"
+                        class="w-full bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-5 py-4 rounded-2xl hover:bg-slate-800 dark:hover:bg-white transition font-bold"
                     >
                         Add Player
                     </button>
@@ -407,14 +347,16 @@
             class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
             >
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold">Update Score</h2>
+                    <h2 class="text-2xl font-bold dark:text-white">
+                        Update Score
+                    </h2>
 
                     <button
                         onclick="closeModal()"
-                        class="text-slate-400 hover:text-slate-600 text-2xl transition"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
                     >
                         ✕
                     </button>
@@ -423,7 +365,7 @@
                 <div class="mb-6">
                     <label
                         id="activePlayerLabel"
-                        class="block text-sm font-semibold text-slate-600 mb-2 ml-1"
+                        class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
                         >Player</label
                     >
                     <input
@@ -431,21 +373,21 @@
                         type="number"
                         step="0.1"
                         placeholder="0"
-                        class="w-full text-3xl font-bold rounded-2xl border border-slate-200 px-5 py-6 outline-none focus:ring-4 focus:ring-blue-100 transition text-center"
+                        class="w-full text-3xl font-bold rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-6 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition text-center dark:text-white dark:placeholder:text-slate-500"
                     />
                 </div>
 
                 <div class="grid grid-cols-1 gap-3">
                     <button
                         onclick="submitScore(true)"
-                        class="w-full bg-blue-600 text-white py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200"
+                        class="w-full bg-blue-600 text-white py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200 dark:shadow-none"
                     >
                         + Add To Score
                     </button>
 
                     <button
                         onclick="submitScore(false)"
-                        class="w-full border border-slate-200 text-slate-600 py-3 rounded-2xl hover:bg-slate-50 transition font-medium"
+                        class="w-full border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 py-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition font-medium"
                     >
                         Replace Score
                     </button>
@@ -482,7 +424,7 @@
             class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50"
+                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
             >
                 <div class="flex items-center justify-between mb-6">
                     <h2
@@ -669,10 +611,10 @@
                     const div = document.createElement("div");
 
                     div.className =
-                        "flex items-center justify-between bg-white/50 px-4 py-3 rounded-xl border border-slate-100";
+                        "flex items-center justify-between bg-white/50 dark:bg-slate-800/50 px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-700/50";
 
                     div.innerHTML = `
-                <span class="font-medium">${player}</span>
+                <span class="font-medium dark:text-slate-200">${player}</span>
 
                 <button
                     onclick="deletePlayer('${player}')"
@@ -712,11 +654,11 @@
                     const label = document.createElement("label");
 
                     label.className =
-                        "bg-white/50 border border-slate-100 px-4 py-3 rounded-2xl cursor-pointer flex items-center gap-3 hover:bg-white transition";
+                        "bg-white/50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 px-4 py-3 rounded-2xl cursor-pointer flex items-center gap-3 hover:bg-white dark:hover:bg-slate-700 transition";
 
                     label.innerHTML = `
-                <input type="checkbox" value="${player}" class="w-5 h-5 rounded-lg border-slate-300 text-blue-600 focus:ring-blue-500" checked>
-                <span class="font-medium">${player}</span>
+                <input type="checkbox" value="${player}" class="w-5 h-5 rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-blue-600 focus:ring-blue-500" checked>
+                <span class="font-medium dark:text-slate-200">${player}</span>
             `;
 
                     container.appendChild(label);
@@ -772,7 +714,7 @@
                 const nameDisplay = document.getElementById("currentGameName");
 
                 if (!games.length) {
-                    container.innerHTML = `<div class="text-slate-400 text-center py-8 italic">No games yet</div>`;
+                    container.innerHTML = `<div class="text-slate-400 dark:text-slate-500 text-center py-8 italic">No games yet</div>`;
                     nameDisplay.innerText = "No Active Game";
                     return;
                 }
@@ -786,12 +728,12 @@
                     const score = game.scores[player] || 0;
                     const div = document.createElement("div");
                     div.className =
-                        "flex items-center justify-between bg-white/50 p-4 rounded-2xl border border-white";
+                        "flex items-center justify-between bg-white/50 dark:bg-slate-800/40 p-4 rounded-2xl border border-white dark:border-white/5 shadow-sm";
                     div.innerHTML = `
-                        <span class="font-semibold text-lg text-slate-800">${player}</span>
+                        <span class="font-semibold text-lg text-slate-800 dark:text-slate-200">${player}</span>
                         <div class="flex items-center gap-4">
-                            <span class="text-2xl font-black text-blue-600">${score}</span>
-                            <button onclick="openModal(${game.id}, '${player}')" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition">Update</button>
+                            <span class="text-2xl font-black text-blue-600 dark:text-blue-400">${score}</span>
+                            <button onclick="openModal(${game.id}, '${player}')" class="bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition">Update</button>
                         </div>
                     `;
                     container.appendChild(div);
@@ -817,7 +759,7 @@
                 container.innerHTML = "";
 
                 if (sortedPlayers.length === 0) {
-                    container.innerHTML = `<div class="text-slate-400 text-center py-8 italic">Add players to see leaderboard</div>`;
+                    container.innerHTML = `<div class="text-slate-400 dark:text-slate-500 text-center py-8 italic">Add players to see leaderboard</div>`;
                     return;
                 }
 
@@ -834,10 +776,10 @@
                     const div = document.createElement("div");
                     div.innerHTML = `
                         <div class="flex items-center justify-between mb-2">
-                            <span class="font-bold text-slate-700 flex items-center">${player}${crownIcon}</span>
-                            <span class="font-black text-slate-900">${score}</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center">${player}${crownIcon}</span>
+                            <span class="font-black text-slate-900 dark:text-white">${score}</span>
                         </div>
-                        <div class="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
+                        <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-50 dark:border-slate-700/50">
                             <div class="bar h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
                         </div>
                     `;
@@ -851,7 +793,7 @@
                 container.innerHTML = "";
 
                 if (games.length === 0) {
-                    container.innerHTML = `<div class="col-span-full text-slate-400 italic text-center py-8">No games history available</div>`;
+                    container.innerHTML = `<div class="col-span-full text-slate-400 dark:text-slate-500 italic text-center py-8">No games history available</div>`;
                     return;
                 }
 
@@ -859,7 +801,7 @@
                 games.forEach((game, index) => {
                     const card = document.createElement("div");
                     card.className =
-                        "bg-white/40 border border-white/50 rounded-3xl p-6 shadow-md fade-in hover:bg-white/60 hover:shadow-lg transition-all duration-300 flex flex-col h-full";
+                        "bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-white/10 rounded-3xl p-6 shadow-md fade-in hover:bg-white/60 dark:hover:bg-slate-800/60 hover:shadow-lg transition-all duration-300 flex flex-col h-full";
 
                     const maxGameScore = Math.max(
                         ...Object.values(game.scores),
@@ -886,11 +828,11 @@
                             return `
                             <div class="mb-3 last:mb-0">
                                 <div class="flex justify-between items-center mb-1 text-xs">
-                                    <span class="font-semibold text-slate-600 flex items-center">${player}${crownIcon}</span>
-                                    <span class="font-bold text-slate-900">${score}</span>
+                                    <span class="font-semibold text-slate-600 dark:text-slate-400 flex items-center">${player}${crownIcon}</span>
+                                    <span class="font-bold text-slate-900 dark:text-slate-100">${score}</span>
                                 </div>
-                                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="bar h-full bg-blue-400 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
+                                <div class="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="bar h-full bg-blue-400 dark:bg-blue-500 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
                                 </div>
                             </div>
                         `;
@@ -900,23 +842,23 @@
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="font-bold text-lg">${game.name}</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mt-0.5">${game.createdAt}</p>
+                                <h3 class="font-bold text-lg dark:text-white">${game.name}</h3>
+                                <p class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold mt-0.5">${game.createdAt}</p>
                             </div>
-                            <button onclick="deleteGame(${game.id})" class="text-slate-300 hover:text-red-500 transition">✕</button>
+                            <button onclick="deleteGame(${game.id})" class="text-slate-300 dark:text-slate-600 hover:text-red-500 transition">✕</button>
                         </div>
 
                         <div class="flex-1 space-y-1 mb-4">
                             ${scoresHtml}
                         </div>
 
-                        <div class="flex justify-between items-center mt-auto pt-4 border-t border-slate-100">
+                        <div class="flex justify-between items-center mt-auto pt-4">
                             ${
                                 index === 0
-                                    ? `<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">Active Game</span>`
-                                    : `<span class="text-[10px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Completed</span>`
+                                    ? `<span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50 uppercase tracking-wider">Active Game</span>`
+                                    : `<span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/80 px-2 py-0.5 rounded-md uppercase tracking-wider">Completed</span>`
                             }
-                            <span class="text-[10px] text-slate-400 font-medium">${game.players.length} Players</span>
+                            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">${game.players.length} Players</span>
                         </div>
                     `;
                     container.appendChild(card);
