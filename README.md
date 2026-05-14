@@ -4,8 +4,6 @@ Score. Save. Repeat. The elegant way to track your game scores.
 
 Score Board is a simple, elegant, and mobile-friendly web application designed to track scores for card games, board games, or any friendly competition. With a focus on speed and aesthetic, it features a modern glassmorphism UI, real-time leaderboard updates, and persistent game history.
 
-![Score Board Preview](og-image.png)
-
 ## 🚀 Features
 
 -   **Glassmorphism UI**: A modern, clean, and interactive design.
