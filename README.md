@@ -47,8 +47,8 @@ python3 -m http.server
 
 ## 📖 How to Use
 
-1.  **Add Players**: Click the "+ Add Player" button to register the names of your friends.
-2.  **Start a Game**: Click "+ Add Game", give it a name, and select the players participating.
+1.  **Add Players**: Click the "Add Player" icon in the header to register the names of your friends.
+2.  **Start a Game**: Click the "Add Game" icon, give it a name, and select the players participating.
 3.  **Update Scores**: In the "Current Game" section, click "Update" next to a player's name to add points or replace their current score.
 4.  **View History**: Scroll down to see the "Game History" cards for all previous sessions.
 5.  **Toggle Theme**: Use the theme toggle in the header to switch between Light and Dark modes.
