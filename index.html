@@ -35,127 +35,76 @@
             };
         </script>
 
-        <style>
-            body {
-                background:
-                    radial-gradient(
-                        circle at top left,
-                        #dbeafe,
-                        transparent 30%
-                    ),
-                    radial-gradient(
-                        circle at bottom right,
-                        #fce7f3,
-                        transparent 30%
-                    ),
-                    #f8fafc;
-                min-height: 100vh;
-                overflow-x: hidden;
-                transition: background 0.3s ease;
-            }
-
-            .dark body {
-                background:
-                    radial-gradient(
-                        circle at top left,
-                        #1e293b,
-                        transparent 30%
-                    ),
-                    radial-gradient(
-                        circle at bottom right,
-                        #312e81,
-                        transparent 30%
-                    ),
-                    #0f172a;
-                color: #f1f5f9;
-            }
-
-            .glass {
-                background: rgba(255, 255, 255, 0.85);
-                backdrop-filter: blur(14px);
-                border: 1px solid rgba(255, 255, 255, 0.5);
-            }
-
-            .dark .glass {
-                background: rgba(15, 23, 42, 0.8);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .fade-in {
-                animation: fadeIn 0.3s ease;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0px);
-                }
-            }
-
-            .bar {
-                transition: all 0.4s ease;
-            }
-        </style>
+        <link rel="stylesheet" href="styles.css" />
     </head>
     <body
-        class="text-slate-700 dark:text-slate-300 min-h-screen flex flex-col transition-colors duration-300"
+        class="text-stone-700 dark:text-stone-300 min-h-screen flex flex-col transition-colors duration-500"
     >
-        <div class="max-w-7xl mx-auto p-6 w-full flex-1">
-            <!-- Header -->
-            <div
-                class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"
+        <!-- Toast Container -->
+        <div
+            id="toastContainer"
+            class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-3 pointer-events-none"
+        ></div>
+
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 py-8 w-full flex-1">
+            <!-- ═══ Header ═══ -->
+            <header
+                class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-5"
             >
                 <div class="flex items-center gap-4">
-                    <img
-                        src="logo.png"
-                        alt="Score Board Logo"
-                        class="w-16 h-16 drop-shadow-sm"
-                    />
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-white/80 dark:bg-stone-800/80 flex items-center justify-center shadow-sm border border-white/50 dark:border-white/5 overflow-hidden"
+                    >
+                        <img
+                            src="logo.png"
+                            alt="Score Board"
+                            class="w-10 h-10 object-contain"
+                        />
+                    </div>
                     <div>
                         <h1
-                            class="text-4xl font-bold tracking-tight dark:text-white"
+                            class="text-3xl sm:text-4xl font-bold tracking-tight text-stone-800 dark:text-stone-100"
                         >
                             Score Board
                         </h1>
-                        <p class="text-slate-500 dark:text-slate-400 mt-1">
+                        <p
+                            class="text-sm text-stone-400 dark:text-stone-500 mt-0.5 font-medium tracking-wide"
+                        >
                             Score. Save. Repeat.
                         </p>
                     </div>
                 </div>
-                <div class="flex gap-3 items-center">
+
+                <div class="flex gap-2 items-center">
                     <button
                         onclick="openInfoModal()"
-                        class="p-3 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition shadow-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
+                        class="p-2.5 rounded-xl bg-white/70 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/40 hover:bg-white dark:hover:bg-stone-700/60 transition-all duration-200 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 shadow-sm"
                         title="About Score Board"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
+                            width="18"
+                            height="18"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="2"
+                            stroke-width="1.8"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
                         </svg>
                     </button>
                     <button
                         onclick="toggleDarkMode()"
-                        class="p-3 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition shadow-sm text-slate-600 dark:text-slate-300"
-                        title="Toggle Dark Mode"
+                        class="p-2.5 rounded-xl bg-white/70 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/40 hover:bg-white dark:hover:bg-stone-700/60 transition-all duration-200 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 shadow-sm"
+                        title="Toggle Theme"
                     >
                         <svg
                             id="theme-icon-light"
-                            class="w-5 h-5 hidden"
+                            class="w-[18px] h-[18px] hidden"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -163,13 +112,13 @@
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                stroke-width="2"
+                                stroke-width="1.8"
                                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"
-                            ></path>
+                            />
                         </svg>
                         <svg
                             id="theme-icon-dark"
-                            class="w-5 h-5"
+                            class="w-[18px] h-[18px]"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -177,44 +126,177 @@
                             <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                stroke-width="2"
+                                stroke-width="1.8"
                                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                            ></path>
+                            />
                         </svg>
                     </button>
                     <button
                         onclick="openAddPlayerModal()"
-                        class="p-3 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition shadow-sm text-slate-600 dark:text-slate-300"
+                        class="p-2.5 rounded-xl bg-white/70 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/40 hover:bg-white dark:hover:bg-stone-700/60 transition-all duration-200 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 shadow-sm"
                         title="Add Player"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
+                            width="18"
+                            height="18"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="2"
+                            stroke-width="1.8"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <path
-                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
-                            ></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <line x1="19" y1="8" x2="19" y2="14"></line>
-                            <line x1="16" y1="11" x2="22" y2="11"></line>
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <line x1="19" y1="8" x2="19" y2="14" />
+                            <line x1="16" y1="11" x2="22" y2="11" />
                         </svg>
                     </button>
                     <button
                         onclick="openAddGameModal()"
-                        class="p-3 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 transition shadow-sm text-slate-600 dark:text-slate-300"
-                        title="Add Game"
+                        class="btn-primary text-white dark:text-stone-900 px-4 py-2.5 rounded-xl font-semibold text-sm shadow-md flex items-center gap-2"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        New Game
+                    </button>
+                </div>
+            </header>
+
+            <!-- ═══ Main Grid ═══ -->
+            <div class="grid lg:grid-cols-2 gap-6 mb-10">
+                <!-- Leaderboard -->
+                <section
+                    class="glass rounded-3xl p-6 sm:p-8 transition-all duration-300"
+                >
+                    <div class="flex items-center justify-between mb-6">
+                        <h2
+                            class="text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                        >
+                            Leaderboard
+                        </h2>
+                        <span
+                            class="text-[10px] font-semibold uppercase tracking-widest text-stone-400 dark:text-stone-500 bg-stone-100/60 dark:bg-stone-800/60 px-2.5 py-1 rounded-full"
+                        >
+                            All time
+                        </span>
+                    </div>
+                    <div
+                        id="totalScoreChart"
+                        class="space-y-5 stagger"
+                    ></div>
+                </section>
+
+                <!-- Current Game -->
+                <section
+                    class="glass rounded-3xl p-6 sm:p-8 transition-all duration-300"
+                >
+                    <div class="flex items-center justify-between mb-6">
+                        <h2
+                            class="text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                        >
+                            Current Game
+                        </h2>
+                        <div
+                            id="currentGameBadge"
+                            class="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full bg-stone-100/60 dark:bg-stone-800/60 text-stone-400 dark:text-stone-500"
+                        >
+                            <span id="liveDot" class="live-dot w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" style="opacity:0"></span>
+                            <span id="currentGameName">Not started</span>
+                        </div>
+                    </div>
+                    <div
+                        id="currentGameScores"
+                        class="space-y-3"
+                    ></div>
+                </section>
+            </div>
+
+            <!-- ═══ Game History ═══ -->
+            <section class="mt-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h2
+                        class="text-lg font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                    >
+                        History
+                    </h2>
+                    <div class="flex items-center gap-3">
+                        <button
+                            id="clearAllBtn"
+                            onclick="clearAllGames()"
+                            class="hidden text-[10px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full border border-stone-200 dark:border-stone-700/50 text-stone-400 dark:text-stone-500 hover:text-red-500 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800/50 hover:bg-red-50 dark:hover:bg-red-900/15 transition-all"
+                        >
+                            Clear All
+                        </button>
+                        <span
+                            id="gameCount"
+                            class="text-xs font-medium text-stone-400 dark:text-stone-500"
+                        ></span>
+                    </div>
+                </div>
+                <div
+                    id="gamesList"
+                    class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4"
+                ></div>
+            </section>
+        </div>
+
+        <!-- ═══ Footer ═══ -->
+        <footer
+            class="w-full mt-16 py-8 text-center text-xs text-stone-400 dark:text-stone-600 border-t border-stone-200/40 dark:border-stone-700/20"
+        >
+            <span class="italic">Vibe-coded by</span>
+            <a
+                class="font-medium text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors ml-1"
+                href="https://shajanjacob.com"
+                target="_blank"
+                >Shajan</a
+            >
+            <span class="mx-2 opacity-30">·</span>
+            <span>between sips of coffee &amp; card shuffles</span>
+        </footer>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- MODALS                                             -->
+        <!-- ════════════════════════════════════════════════════ -->
+
+        <!-- New Game Modal -->
+        <div
+            id="addGameModal"
+            class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
+            onclick="if(event.target===this)closeAddGameModal()"
+        >
+            <div
+                class="glass-strong rounded-3xl w-full max-w-md p-7 sm:p-8 shadow-2xl fade-in-up"
+                onclick="event.stopPropagation()"
+            >
+                <div class="flex items-center justify-between mb-7">
+                    <h2
+                        class="text-xl font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                    >
+                        New Game
+                    </h2>
+                    <button
+                        onclick="closeAddGameModal()"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -222,129 +304,55 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <circle cx="12" cy="12" r="6"></circle>
-                            <circle cx="12" cy="12" r="2"></circle>
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
                         </svg>
                     </button>
                 </div>
-            </div>
 
-            <!-- Score Summary -->
-            <div class="grid lg:grid-cols-2 gap-8 mb-8">
-                <!-- Total Game Score / Chart -->
-                <div
-                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 dark:border-white/10 hover:shadow-lg transition-all duration-300"
-                >
-                    <h2 class="text-2xl font-bold mb-6 dark:text-white">
-                        Leaderboard (Total)
-                    </h2>
-                    <div id="totalScoreChart" class="space-y-6">
-                        <!-- Chart bars will be injected here -->
-                    </div>
-                </div>
-
-                <!-- Current Game Score -->
-                <div
-                    class="glass rounded-[2rem] p-8 shadow-md border-white/50 dark:border-white/10 hover:shadow-lg transition-all duration-300"
-                >
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold dark:text-white">
-                            Current Game
-                        </h2>
-                        <div
-                            id="currentGameName"
-                            class="text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/30 px-4 py-1 rounded-full text-sm"
-                        >
-                            No Active Game
-                        </div>
-                    </div>
-                    <div id="currentGameScores" class="space-y-4">
-                        <div
-                            class="text-slate-400 dark:text-slate-500 text-center py-8"
-                        >
-                            Start a game to see scores
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Games History (optional/collapsible?) -->
-            <div class="mt-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h2
-                        class="text-xl font-semibold text-slate-800 dark:text-slate-200"
-                    >
-                        Game History
-                    </h2>
-                </div>
-                <div
-                    id="gamesList"
-                    class="grid md:grid-cols-2 xl:grid-cols-3 gap-6"
-                ></div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer
-            class="w-full bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border-t border-white/20 dark:border-white/5 py-8 text-center text-slate-400 dark:text-slate-500 text-xs italic mt-20"
-        >
-            Vibe-coded by
-            <a
-                class="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition"
-                href="https://shajanjacob.com"
-                target="_blank"
-                >Shajan</a
-            >
-            between sips of coffee and card shuffles.
-        </footer>
-
-        <!-- Create Game Modal -->
-        <div
-            id="addGameModal"
-            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
-        >
-            <div
-                class="glass rounded-[2rem] w-full max-w-lg p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
-            >
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold dark:text-white">New Game</h2>
-                    <button
-                        onclick="closeAddGameModal()"
-                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
-                    >
-                        ✕
-                    </button>
-                </div>
-
-                <div class="space-y-6">
+                <div class="space-y-5">
                     <div>
                         <label
-                            class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
-                            >Game Title</label
+                            class="block text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 ml-1"
                         >
+                            Game Title
+                        </label>
                         <input
                             id="gameName"
                             type="text"
-                            placeholder="Game name"
-                            class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition dark:text-white dark:placeholder:text-slate-500"
+                            placeholder="e.g. Rummy Night"
+                            class="input-elegant w-full rounded-2xl border border-stone-200 dark:border-stone-700 bg-white/60 dark:bg-stone-900/60 px-5 py-3.5 outline-none text-sm transition dark:text-white dark:placeholder:text-stone-500"
                         />
                     </div>
 
                     <div>
                         <label
-                            class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
-                            >Select Players</label
+                            class="block text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 ml-1"
                         >
+                            Select Players
+                        </label>
                         <div
                             id="playerSelection"
-                            class="grid grid-cols-2 gap-3"
+                            class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto scrollbar-thin pr-1"
                         ></div>
+                        <p
+                            id="noPlayersMsg"
+                            class="text-xs text-stone-400 dark:text-stone-500 italic text-center py-4 hidden"
+                        >
+                            No players yet.
+                        </p>
+                        <button
+                            onclick="openAddPlayerFromGameModal()"
+                            class="mt-1 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-stone-200 dark:border-stone-700/60 text-xs font-semibold text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600 hover:bg-white/40 dark:hover:bg-stone-800/30 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Player
+                        </button>
                     </div>
 
                     <button
                         onclick="createGame()"
-                        class="w-full bg-blue-600 text-white px-5 py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200 dark:shadow-none"
+                        class="btn-primary w-full text-white dark:text-stone-900 font-bold py-3.5 rounded-2xl text-sm"
                     >
                         Start Game
                     </button>
@@ -355,42 +363,73 @@
         <!-- Add Player Modal -->
         <div
             id="addPlayerModal"
-            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+            class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
+            onclick="if(event.target===this)closeAddPlayerModal()"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
+                class="glass-strong rounded-3xl w-full max-w-sm p-7 sm:p-8 shadow-2xl fade-in-up"
+                onclick="event.stopPropagation()"
             >
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold dark:text-white">
+                <div class="flex items-center justify-between mb-7">
+                    <h2
+                        class="text-xl font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                    >
                         Add Player
                     </h2>
                     <button
                         onclick="closeAddPlayerModal()"
-                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition"
                     >
-                        ✕
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                     </button>
                 </div>
 
-                <div class="space-y-6">
-                    <input
-                        id="playerInput"
-                        type="text"
-                        placeholder="Player name"
-                        class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-4 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition dark:text-white dark:placeholder:text-slate-500"
-                    />
-
-                    <button
-                        onclick="addPlayer()"
-                        class="w-full bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-5 py-4 rounded-2xl hover:bg-slate-800 dark:hover:bg-white transition font-bold"
+                <div class="space-y-4">
+                    <form
+                        id="addPlayerForm"
+                        onsubmit="event.preventDefault();addPlayer()"
                     >
-                        Add Player
-                    </button>
+                        <div class="flex gap-2">
+                            <input
+                                id="playerInput"
+                                type="text"
+                                placeholder="Player name"
+                                autocomplete="off"
+                                class="input-elegant flex-1 rounded-2xl border border-stone-200 dark:border-stone-700 bg-white/60 dark:bg-stone-900/60 px-5 py-3.5 outline-none text-sm transition dark:text-white dark:placeholder:text-stone-500"
+                            />
+                            <button
+                                type="submit"
+                                class="btn-primary text-white dark:text-stone-900 font-bold px-5 rounded-2xl text-sm whitespace-nowrap"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </form>
 
                     <div
                         id="playersList"
-                        class="space-y-2 mt-4 max-h-48 overflow-y-auto pr-2"
+                        class="space-y-1.5 mt-5 max-h-52 overflow-y-auto scrollbar-thin pr-1"
                     ></div>
+
+                    <p
+                        id="noPlayersMsg2"
+                        class="text-xs text-stone-400 dark:text-stone-500 italic text-center pt-2"
+                    >
+                        No players yet. Type a name above to get started.
+                    </p>
                 </div>
             </div>
         </div>
@@ -398,52 +437,72 @@
         <!-- Score Update Modal -->
         <div
             id="scoreModal"
-            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+            class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
+            onclick="if(event.target===this)closeModal()"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
+                class="glass-strong rounded-3xl w-full max-w-sm p-7 sm:p-8 shadow-2xl fade-in-up"
+                onclick="event.stopPropagation()"
             >
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold dark:text-white">
+                <div class="flex items-center justify-between mb-7">
+                    <h2
+                        class="text-xl font-bold tracking-tight text-stone-800 dark:text-stone-100"
+                    >
                         Update Score
                     </h2>
-
                     <button
                         onclick="closeModal()"
-                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition"
                     >
-                        ✕
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                     </button>
                 </div>
 
                 <div class="mb-6">
-                    <label
+                    <p
                         id="activePlayerLabel"
-                        class="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2 ml-1"
-                        >Player</label
+                        class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-3 ml-1"
+                    ></p>
+                    <form
+                        id="scoreForm"
+                        onsubmit="event.preventDefault();submitScore(true)"
                     >
-                    <input
-                        id="scoreInput"
-                        type="number"
-                        step="0.1"
-                        placeholder="0"
-                        class="w-full text-3xl font-bold rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-6 outline-none focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition text-center dark:text-white dark:placeholder:text-slate-500"
-                    />
+                        <input
+                            id="scoreInput"
+                            type="number"
+                            step="0.1"
+                            placeholder="0"
+                            autocomplete="off"
+                            class="input-elegant w-full text-3xl font-bold rounded-2xl border border-stone-200 dark:border-stone-700 bg-white/60 dark:bg-stone-900/60 px-5 py-6 outline-none transition text-center dark:text-white dark:placeholder:text-stone-500"
+                        />
+                    </form>
                 </div>
 
-                <div class="grid grid-cols-1 gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <button
                         onclick="submitScore(true)"
-                        class="w-full bg-blue-600 text-white py-4 rounded-2xl hover:bg-blue-700 transition font-bold shadow-lg shadow-blue-200 dark:shadow-none"
+                        class="btn-primary text-white dark:text-stone-900 font-bold py-3.5 rounded-2xl text-sm"
                     >
-                        + Add To Score
+                        + Add
                     </button>
-
                     <button
                         onclick="submitScore(false)"
-                        class="w-full border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 py-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition font-medium"
+                        class="py-3.5 rounded-2xl text-sm font-semibold border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800/50 transition"
                     >
-                        Replace Score
+                        Replace
                     </button>
                 </div>
             </div>
@@ -452,497 +511,72 @@
         <!-- Info Modal -->
         <div
             id="infoModal"
-            class="fixed inset-0 hidden items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 z-50"
+            class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
+            onclick="if(event.target===this)closeInfoModal()"
         >
             <div
-                class="glass rounded-[2rem] w-full max-w-md p-8 shadow-2xl fade-in border-white/50 dark:border-white/10"
+                class="glass-strong rounded-3xl w-full max-w-md p-7 sm:p-8 shadow-2xl fade-in-up"
+                onclick="event.stopPropagation()"
             >
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-7">
                     <h2
-                        class="text-2xl font-bold text-slate-900 dark:text-slate-100"
+                        class="text-xl font-bold tracking-tight text-stone-800 dark:text-stone-100"
                     >
-                        About Score Board
+                        About
                     </h2>
                     <button
                         onclick="closeInfoModal()"
-                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl transition"
+                        class="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition"
                     >
-                        ✕
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                     </button>
                 </div>
 
-                <div class="space-y-4 text-slate-700 dark:text-slate-400">
+                <div class="space-y-4 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
                     <p>
-                        <span
-                            class="font-bold text-slate-900 dark:text-slate-100"
-                            >Score Board</span
+                        <strong class="text-stone-800 dark:text-stone-200"
+                            >Score Board</strong
                         >
-                        is a simple, elegant way to track scores for your
-                        favorite card games, board games, or any friendly
-                        competition.
+                        is a simple, elegant way to track scores for your favorite
+                        card games, board games, or any friendly competition.
                     </p>
                     <p>
                         It features real-time leaderboard updates and keeps a
-                        persistent history of all your games. All your data is
-                        stored locally in your browser, ensuring your privacy
-                        and quick access.
+                        persistent history of all your games. All data is stored
+                        locally in your browser — private, fast, and always available.
                     </p>
+                    <div
+                        class="pt-2 flex items-center gap-2 text-[10px] uppercase tracking-widest font-semibold text-stone-400 dark:text-stone-500"
+                    >
+                        <span class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></span>
+                        v1.0
+                        <span class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></span>
+                        offline-ready
+                    </div>
                 </div>
 
                 <button
                     onclick="closeInfoModal()"
-                    class="w-full mt-8 bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-5 py-4 rounded-2xl hover:opacity-90 transition font-bold"
+                    class="btn-primary w-full text-white dark:text-stone-900 font-bold py-3.5 rounded-2xl text-sm mt-7"
                 >
                     Got it!
                 </button>
             </div>
         </div>
 
-        <script>
-            let players = JSON.parse(localStorage.getItem("players") || "[]");
-            let games = JSON.parse(localStorage.getItem("games") || "[]");
-
-            let activeGameId = null;
-            let activePlayer = null;
-
-            // Dark Mode Logic
-            function initTheme() {
-                const theme = localStorage.getItem("theme");
-                if (
-                    theme === "dark" ||
-                    (!theme &&
-                        window.matchMedia("(prefers-color-scheme: dark)")
-                            .matches)
-                ) {
-                    document.documentElement.classList.add("dark");
-                    updateThemeIcons(true);
-                } else {
-                    document.documentElement.classList.remove("dark");
-                    updateThemeIcons(false);
-                }
-            }
-
-            function toggleDarkMode() {
-                const isDark =
-                    document.documentElement.classList.toggle("dark");
-                localStorage.setItem("theme", isDark ? "dark" : "light");
-                updateThemeIcons(isDark);
-            }
-
-            function openInfoModal() {
-                document.getElementById("infoModal").classList.remove("hidden");
-                document.getElementById("infoModal").classList.add("flex");
-            }
-
-            function closeInfoModal() {
-                document.getElementById("infoModal").classList.add("hidden");
-                document.getElementById("infoModal").classList.remove("flex");
-            }
-
-            function updateThemeIcons(isDark) {
-                const sunIcon = document.getElementById("theme-icon-light");
-                const moonIcon = document.getElementById("theme-icon-dark");
-                if (isDark) {
-                    sunIcon.classList.remove("hidden");
-                    moonIcon.classList.add("hidden");
-                } else {
-                    sunIcon.classList.add("hidden");
-                    moonIcon.classList.remove("hidden");
-                }
-            }
-
-            initTheme();
-
-            function saveData() {
-                localStorage.setItem("players", JSON.stringify(players));
-                localStorage.setItem("games", JSON.stringify(games));
-            }
-
-            function getNextGameTitle() {
-                const gameTitles = games.map((g) => g.name);
-                const gameNumbers = gameTitles
-                    .map((t) => {
-                        const match = t.match(/Game (\d+)/);
-                        return match ? parseInt(match[1]) : 0;
-                    })
-                    .filter((n) => !isNaN(n));
-
-                const nextNum =
-                    gameNumbers.length > 0 ? Math.max(...gameNumbers) + 1 : 1;
-                return `Game ${nextNum}`;
-            }
-
-            function openAddGameModal() {
-                document.getElementById("gameName").value = getNextGameTitle();
-                renderPlayerSelection();
-                document
-                    .getElementById("addGameModal")
-                    .classList.remove("hidden");
-                document.getElementById("addGameModal").classList.add("flex");
-            }
-
-            function closeAddGameModal() {
-                document.getElementById("addGameModal").classList.add("hidden");
-                document
-                    .getElementById("addGameModal")
-                    .classList.remove("flex");
-            }
-
-            function openAddPlayerModal() {
-                renderPlayers();
-                document
-                    .getElementById("addPlayerModal")
-                    .classList.remove("hidden");
-                document.getElementById("addPlayerModal").classList.add("flex");
-            }
-
-            function closeAddPlayerModal() {
-                document
-                    .getElementById("addPlayerModal")
-                    .classList.add("hidden");
-                document
-                    .getElementById("addPlayerModal")
-                    .classList.remove("flex");
-            }
-
-            function addPlayer() {
-                const input = document.getElementById("playerInput");
-                const name = input.value.trim();
-
-                if (!name) return;
-
-                if (players.includes(name)) {
-                    alert("Player already exists");
-                    return;
-                }
-
-                players.push(name);
-
-                saveData();
-                renderPlayers();
-                renderPlayerSelection();
-
-                input.value = "";
-            }
-
-            function renderPlayers() {
-                const list = document.getElementById("playersList");
-
-                list.innerHTML = "";
-
-                players.forEach((player) => {
-                    const div = document.createElement("div");
-
-                    div.className =
-                        "flex items-center justify-between bg-white/50 dark:bg-slate-800/50 px-4 py-3 rounded-xl border border-slate-100 dark:border-slate-700/50";
-
-                    div.innerHTML = `
-                <span class="font-medium dark:text-slate-200">${player}</span>
-
-                <button
-                    onclick="deletePlayer('${player}')"
-                    class="text-red-400 hover:text-red-600 transition"
-                >
-                    ✕
-                </button>
-            `;
-
-                    list.appendChild(div);
-                });
-            }
-
-            function deletePlayer(player) {
-                if (!confirm(`Are you sure you want to delete ${player}?`))
-                    return;
-                players = players.filter((p) => p !== player);
-
-                games.forEach((game) => {
-                    delete game.scores[player];
-                    game.players = game.players.filter((p) => p !== player);
-                });
-
-                saveData();
-
-                renderPlayers();
-                renderPlayerSelection();
-                renderAll();
-            }
-
-            function renderPlayerSelection() {
-                const container = document.getElementById("playerSelection");
-
-                container.innerHTML = "";
-
-                players.forEach((player) => {
-                    const label = document.createElement("label");
-
-                    label.className =
-                        "bg-white/50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 px-4 py-3 rounded-2xl cursor-pointer flex items-center gap-3 hover:bg-white dark:hover:bg-slate-700 transition";
-
-                    label.innerHTML = `
-                <input type="checkbox" value="${player}" class="w-5 h-5 rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-blue-600 focus:ring-blue-500" checked>
-                <span class="font-medium dark:text-slate-200">${player}</span>
-            `;
-
-                    container.appendChild(label);
-                });
-            }
-
-            function createGame() {
-                const name = document.getElementById("gameName").value.trim();
-
-                if (!name) {
-                    alert("Enter game name");
-                    return;
-                }
-
-                const selectedPlayers = [
-                    ...document.querySelectorAll(
-                        "#playerSelection input:checked",
-                    ),
-                ].map((el) => el.value);
-
-                if (!selectedPlayers.length) {
-                    alert("Select players");
-                    return;
-                }
-
-                const scores = {};
-
-                selectedPlayers.forEach((p) => {
-                    scores[p] = 0;
-                });
-
-                games.unshift({
-                    id: Date.now(),
-                    name,
-                    players: selectedPlayers,
-                    scores,
-                    createdAt: new Date().toLocaleString(),
-                });
-
-                saveData();
-                closeAddGameModal();
-                renderAll();
-            }
-
-            function renderAll() {
-                renderCurrentGame();
-                renderTotalScores();
-                renderGamesHistory();
-            }
-
-            function renderCurrentGame() {
-                const container = document.getElementById("currentGameScores");
-                const nameDisplay = document.getElementById("currentGameName");
-
-                if (!games.length) {
-                    container.innerHTML = `<div class="text-slate-400 dark:text-slate-500 text-center py-8 italic">No games yet</div>`;
-                    nameDisplay.innerText = "No Active Game";
-                    return;
-                }
-
-                const game = games[0];
-                nameDisplay.innerText = game.name;
-
-                container.innerHTML = "";
-
-                game.players.forEach((player) => {
-                    const score = game.scores[player] || 0;
-                    const div = document.createElement("div");
-                    div.className =
-                        "flex items-center justify-between bg-white/50 dark:bg-slate-800/40 p-4 rounded-2xl border border-white dark:border-white/5 shadow-sm";
-                    div.innerHTML = `
-                        <span class="font-semibold text-lg text-slate-800 dark:text-slate-200">${player}</span>
-                        <div class="flex items-center gap-4">
-                            <span class="text-2xl font-black text-blue-600 dark:text-blue-400">${score}</span>
-                            <button onclick="openModal(${game.id}, '${player}')" class="bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition">Update</button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            }
-
-            function renderTotalScores() {
-                const container = document.getElementById("totalScoreChart");
-                const totals = {};
-
-                players.forEach((p) => (totals[p] = 0));
-                games.forEach((g) => {
-                    Object.entries(g.scores).forEach(([p, s]) => {
-                        if (totals[p] !== undefined) totals[p] += s;
-                    });
-                });
-
-                const sortedPlayers = Object.entries(totals).sort(
-                    (a, b) => b[1] - a[1],
-                );
-                const maxScore = Math.max(...Object.values(totals), 1);
-
-                container.innerHTML = "";
-
-                if (sortedPlayers.length === 0) {
-                    container.innerHTML = `<div class="text-slate-400 dark:text-slate-500 text-center py-8 italic">Add players to see leaderboard</div>`;
-                    return;
-                }
-
-                sortedPlayers.forEach(([player, score]) => {
-                    const percentage = (score / maxScore) * 100;
-                    const isWinner = score === maxScore && maxScore > 0;
-                    const crownIcon = isWinner
-                        ? `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-2 text-amber-500 fill-amber-200 inline-block">
-                            <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
-                        </svg>`
-                        : "";
-
-                    const div = document.createElement("div");
-                    div.innerHTML = `
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center">${player}${crownIcon}</span>
-                            <span class="font-black text-slate-900 dark:text-white">${score}</span>
-                        </div>
-                        <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-50 dark:border-slate-700/50">
-                            <div class="bar h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            }
-
-            function renderGamesHistory() {
-                const container = document.getElementById("gamesList");
-
-                container.innerHTML = "";
-
-                if (games.length === 0) {
-                    container.innerHTML = `<div class="col-span-full text-slate-400 dark:text-slate-500 italic text-center py-8">No games history available</div>`;
-                    return;
-                }
-
-                // Show all games in history
-                games.forEach((game, index) => {
-                    const card = document.createElement("div");
-                    card.className =
-                        "bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-white/10 rounded-3xl p-6 shadow-md fade-in hover:bg-white/60 dark:hover:bg-slate-800/60 hover:shadow-lg transition-all duration-300 flex flex-col h-full";
-
-                    const maxGameScore = Math.max(
-                        ...Object.values(game.scores),
-                        1,
-                    );
-
-                    const actualMaxScore = Math.max(
-                        ...Object.values(game.scores),
-                    );
-
-                    const scoresHtml = game.players
-                        .map((player) => {
-                            const score = game.scores[player] || 0;
-                            const percentage = (score / maxGameScore) * 100;
-                            const isWinner =
-                                score === actualMaxScore && actualMaxScore > 0;
-                            const crownIcon = isWinner
-                                ? `
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-1 text-amber-500 fill-amber-200 inline-block">
-                                    <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
-                                </svg>`
-                                : "";
-
-                            return `
-                            <div class="mb-3 last:mb-0">
-                                <div class="flex justify-between items-center mb-1 text-xs">
-                                    <span class="font-semibold text-slate-600 dark:text-slate-400 flex items-center">${player}${crownIcon}</span>
-                                    <span class="font-bold text-slate-900 dark:text-slate-100">${score}</span>
-                                </div>
-                                <div class="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                    <div class="bar h-full bg-blue-400 dark:bg-blue-500 rounded-full" style="width: ${Math.max(percentage, 2)}%"></div>
-                                </div>
-                            </div>
-                        `;
-                        })
-                        .join("");
-
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-bold text-lg dark:text-white">${game.name}</h3>
-                                <p class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold mt-0.5">${game.createdAt}</p>
-                            </div>
-                            <button onclick="deleteGame(${game.id})" class="text-slate-300 dark:text-slate-600 hover:text-red-500 transition">✕</button>
-                        </div>
-
-                        <div class="flex-1 space-y-1 mb-4">
-                            ${scoresHtml}
-                        </div>
-
-                        <div class="flex justify-between items-center mt-auto pt-4">
-                            ${
-                                index === 0
-                                    ? `<span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50 uppercase tracking-wider">Active Game</span>`
-                                    : `<span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/80 px-2 py-0.5 rounded-md uppercase tracking-wider">Completed</span>`
-                            }
-                            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">${game.players.length} Players</span>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
-
-            function deleteGame(id) {
-                if (!confirm("Delete this game record?")) return;
-                games = games.filter((g) => g.id !== id);
-                saveData();
-                renderAll();
-            }
-
-            function openModal(gameId, player) {
-                activeGameId = gameId;
-                activePlayer = player;
-                document.getElementById("activePlayerLabel").innerText =
-                    `Update score for ${player}`;
-                document.getElementById("scoreInput").value = "";
-                document
-                    .getElementById("scoreModal")
-                    .classList.remove("hidden");
-                document.getElementById("scoreModal").classList.add("flex");
-                setTimeout(
-                    () => document.getElementById("scoreInput").focus(),
-                    100,
-                );
-            }
-
-            function closeModal() {
-                document.getElementById("scoreModal").classList.add("hidden");
-                document.getElementById("scoreModal").classList.remove("flex");
-            }
-
-            function submitScore(addMode) {
-                const value = parseFloat(
-                    document.getElementById("scoreInput").value,
-                );
-
-                if (isNaN(value)) {
-                    alert("Enter valid score");
-                    return;
-                }
-
-                const game = games.find((g) => g.id === activeGameId);
-
-                if (!game) return;
-
-                if (addMode) {
-                    game.scores[activePlayer] =
-                        (game.scores[activePlayer] || 0) + value;
-                } else {
-                    game.scores[activePlayer] = value;
-                }
-
-                saveData();
-                renderAll();
-                closeModal();
-            }
-
-            renderAll();
-        </script>
+        <script src="app.js"></script>
     </body>
 </html>
