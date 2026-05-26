@@ -44,16 +44,8 @@ function showToast(message, type = "success") {
         info:
             "bg-stone-50 dark:bg-stone-800/60 border-stone-200/50 dark:border-stone-700/30 text-stone-600 dark:text-stone-300",
     };
-    const icons = {
-        success: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`,
-        error: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>`,
-        info: `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
-    };
-
-    toast.className = `pointer-events-auto animate-toast-in flex items-center gap-2.5 px-5 py-3 rounded-2xl border text-sm font-medium shadow-lg backdrop-blur-md ${colors[type] || colors.info}`;
-    toast.innerHTML =
-        (icons[type] || icons.info) +
-        `<span>${message}</span>`;
+    toast.className = `pointer-events-auto animate-toast-in px-5 py-3 rounded-2xl border text-sm font-medium shadow-lg backdrop-blur-md ${colors[type] || colors.info}`;
+    toast.textContent = message;
     container.appendChild(toast);
 
     clearTimeout(toastTimer);
@@ -137,7 +129,7 @@ function addPlayer() {
     renderPlayerSelection();
     input.value = "";
     input.focus();
-    showToast(`"${name}" added ✨`);
+    showToast(`✨ "${name}" added`);
 }
 
 function deletePlayer(player) {
@@ -152,6 +144,39 @@ function deletePlayer(player) {
     renderPlayerSelection();
     renderAll();
     showToast(`"${player}" removed`);
+}
+
+function renamePlayer(oldName) {
+    const newName = prompt(`Rename "${oldName}" to:`, oldName);
+    if (!newName || newName.trim() === oldName) return;
+    const trimmed = newName.trim();
+    if (!trimmed) {
+        showToast("Enter a valid name", "error");
+        return;
+    }
+    if (players.includes(trimmed)) {
+        showToast("That name is already taken", "error");
+        return;
+    }
+
+    const idx = players.indexOf(oldName);
+    if (idx === -1) return;
+    players[idx] = trimmed;
+
+    games.forEach((g) => {
+        if (g.scores[oldName] !== undefined) {
+            g.scores[trimmed] = g.scores[oldName];
+            delete g.scores[oldName];
+        }
+        const pIdx = g.players.indexOf(oldName);
+        if (pIdx !== -1) g.players[pIdx] = trimmed;
+    });
+
+    saveData();
+    renderPlayers();
+    renderPlayerSelection();
+    renderAll();
+    showToast(`✏️ "${oldName}" renamed to "${trimmed}"`);
 }
 
 function renderPlayers() {
@@ -171,11 +196,20 @@ function renderPlayers() {
             "flex items-center justify-between group px-4 py-2.5 rounded-xl bg-white/40 dark:bg-stone-900/40 border border-stone-100 dark:border-stone-800/50";
         div.innerHTML = `
             <span class="text-sm font-medium text-stone-700 dark:text-stone-300">${player}</span>
-            <button onclick="deletePlayer('${player}')"
-                class="text-stone-300 dark:text-stone-600 hover:text-red-400 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-sm font-medium"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            </button>
+            <div class="flex items-center gap-1">
+                <button onclick="renamePlayer('${player}')"
+                    class="text-stone-300 dark:text-stone-600 hover:text-stone-500 dark:hover:text-stone-300 opacity-0 group-hover:opacity-100 transition-all p-1"
+                    title="Rename player"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+                <button onclick="deletePlayer('${player}')"
+                    class="text-stone-300 dark:text-stone-600 hover:text-red-400 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-1"
+                    title="Remove player"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+            </div>
         `;
         list.appendChild(div);
     });
@@ -237,7 +271,7 @@ function createGame() {
     saveData();
     closeAddGameModal();
     renderAll();
-    showToast(`"${name}" started 🎲`);
+    showToast(`🎲 "${name}" started`);
 }
 
 function deleteGame(id) {

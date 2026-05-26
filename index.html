@@ -147,7 +147,9 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <path
+                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                            />
                             <circle cx="9" cy="7" r="4" />
                             <line x1="19" y1="8" x2="19" y2="14" />
                             <line x1="16" y1="11" x2="22" y2="11" />
@@ -194,10 +196,7 @@
                             All time
                         </span>
                     </div>
-                    <div
-                        id="totalScoreChart"
-                        class="space-y-5 stagger"
-                    ></div>
+                    <div id="totalScoreChart" class="space-y-5 stagger"></div>
                 </section>
 
                 <!-- Current Game -->
@@ -214,14 +213,15 @@
                             id="currentGameBadge"
                             class="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full bg-stone-100/60 dark:bg-stone-800/60 text-stone-400 dark:text-stone-500"
                         >
-                            <span id="liveDot" class="live-dot w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" style="opacity:0"></span>
+                            <span
+                                id="liveDot"
+                                class="live-dot w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"
+                                style="opacity: 0"
+                            ></span>
                             <span id="currentGameName">Not started</span>
                         </div>
                     </div>
-                    <div
-                        id="currentGameScores"
-                        class="space-y-3"
-                    ></div>
+                    <div id="currentGameScores" class="space-y-3"></div>
                 </section>
             </div>
 
@@ -258,15 +258,15 @@
         <footer
             class="w-full mt-16 py-8 text-center text-xs text-stone-400 dark:text-stone-600 border-t border-stone-200/40 dark:border-stone-700/20"
         >
-            <span class="italic">Vibe-coded by</span>
-            <a
+            <span class="italic">Vibe-coded by</span
+            ><a
                 class="font-medium text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors ml-1"
                 href="https://shajanjacob.com"
                 target="_blank"
-                >Shajan</a
             >
-            <span class="mx-2 opacity-30">·</span>
-            <span>between sips of coffee &amp; card shuffles</span>
+                Shajan
+            </a>
+            <span>between sips of coffee &amp; card shuffles.</span>
         </footer>
 
         <!-- ════════════════════════════════════════════════════ -->
@@ -277,7 +277,7 @@
         <div
             id="addGameModal"
             class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
-            onclick="if(event.target===this)closeAddGameModal()"
+            onclick="if (event.target === this) closeAddGameModal();"
         >
             <div
                 class="glass-strong rounded-3xl w-full max-w-md p-7 sm:p-8 shadow-2xl fade-in-up"
@@ -345,7 +345,20 @@
                             onclick="openAddPlayerFromGameModal()"
                             class="mt-1 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-stone-200 dark:border-stone-700/60 text-xs font-semibold text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600 hover:bg-white/40 dark:hover:bg-stone-800/30 transition-all"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
                             Add Player
                         </button>
                     </div>
@@ -364,7 +377,7 @@
         <div
             id="addPlayerModal"
             class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
-            onclick="if(event.target===this)closeAddPlayerModal()"
+            onclick="if (event.target === this) closeAddPlayerModal();"
         >
             <div
                 class="glass-strong rounded-3xl w-full max-w-sm p-7 sm:p-8 shadow-2xl fade-in-up"
@@ -400,7 +413,10 @@
                 <div class="space-y-4">
                     <form
                         id="addPlayerForm"
-                        onsubmit="event.preventDefault();addPlayer()"
+                        onsubmit="
+                            event.preventDefault();
+                            addPlayer();
+                        "
                     >
                         <div class="flex gap-2">
                             <input
@@ -438,7 +454,7 @@
         <div
             id="scoreModal"
             class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
-            onclick="if(event.target===this)closeModal()"
+            onclick="if (event.target === this) closeModal();"
         >
             <div
                 class="glass-strong rounded-3xl w-full max-w-sm p-7 sm:p-8 shadow-2xl fade-in-up"
@@ -478,7 +494,10 @@
                     ></p>
                     <form
                         id="scoreForm"
-                        onsubmit="event.preventDefault();submitScore(true)"
+                        onsubmit="
+                            event.preventDefault();
+                            submitScore(true);
+                        "
                     >
                         <input
                             id="scoreInput"
@@ -512,7 +531,7 @@
         <div
             id="infoModal"
             class="modal-overlay fixed inset-0 hidden items-center justify-center bg-black/30 backdrop-blur-sm p-4 z-50"
-            onclick="if(event.target===this)closeInfoModal()"
+            onclick="if (event.target === this) closeInfoModal();"
         >
             <div
                 class="glass-strong rounded-3xl w-full max-w-md p-7 sm:p-8 shadow-2xl fade-in-up"
@@ -545,25 +564,33 @@
                     </button>
                 </div>
 
-                <div class="space-y-4 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                <div
+                    class="space-y-4 text-sm leading-relaxed text-stone-600 dark:text-stone-400"
+                >
                     <p>
                         <strong class="text-stone-800 dark:text-stone-200"
                             >Score Board</strong
                         >
-                        is a simple, elegant way to track scores for your favorite
-                        card games, board games, or any friendly competition.
+                        is a simple, elegant way to track scores for your
+                        favorite card games, board games, or any friendly
+                        competition.
                     </p>
                     <p>
                         It features real-time leaderboard updates and keeps a
                         persistent history of all your games. All data is stored
-                        locally in your browser — private, fast, and always available.
+                        locally in your browser — private, fast, and always
+                        available.
                     </p>
                     <div
                         class="pt-2 flex items-center gap-2 text-[10px] uppercase tracking-widest font-semibold text-stone-400 dark:text-stone-500"
                     >
-                        <span class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></span>
+                        <span
+                            class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"
+                        ></span>
                         v1.0
-                        <span class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></span>
+                        <span
+                            class="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"
+                        ></span>
                         offline-ready
                     </div>
                 </div>
